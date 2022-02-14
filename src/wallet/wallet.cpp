@@ -2694,7 +2694,7 @@ CAmount CWalletTx::GetImmatureCredit(bool fUseCache) const
     return 0;
 }
 
-CAmount CWalletTx::GetAvailableCredit(bool fUseCache) const
+CAmount CWalletTx::GetAvailableCredit(bool fUseCache, int index) const
 {
     if (pwallet == 0)
         return 0;
@@ -2710,6 +2710,13 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache) const
     uint256 hashTx = GetHash();
     for (unsigned int i = 0; i < vout.size(); i++)
     {
+
+        if (index > -1) {
+            if (index != i){
+                continue;
+            }
+        }
+
         if (!pwallet->IsSpent(hashTx, i))
         {
             const CTxOut &txout = vout[i];
